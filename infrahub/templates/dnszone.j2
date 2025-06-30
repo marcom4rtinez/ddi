@@ -15,7 +15,7 @@ provider "powerdns" {
 
 
 resource "powerdns_zone" "{{ data.TopologyTopology.edges[0].node.name.value }}" {
-  name        = {{ data.TopologyTopology.edges[0].node.name.value }}.com."
+  name        = "{{ data.TopologyTopology.edges[0].node.name.value }}.com."
   kind        = "Native"
   nameservers = ["ns1.{{ data.TopologyTopology.edges[0].node.name.value }}.com.", "ns2.{{ data.TopologyTopology.edges[0].node.name.value }}.com."]
 }
