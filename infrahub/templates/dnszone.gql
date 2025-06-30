@@ -1,0 +1,29 @@
+query dnszone($topology: String!) {
+  TopologyTopology(name__value: $topology) {
+    edges {
+      node {
+        name {
+          id
+          value
+        }
+        devices {
+          edges {
+            node {
+              id
+              name {
+                value
+              }
+              primary_address {
+                node {
+                  address {
+                    ip
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

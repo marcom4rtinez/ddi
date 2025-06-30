@@ -1,0 +1,29 @@
+services:
+  kea:
+    image: rkojedzinszky/kea:latest
+    container_name: kea
+    restart: unless-stopped
+    ports:
+      - "67:67/udp" # DHCPv4
+      # - "547:547/udp" # DHCPv6
+    networks:
+      - ddi
+
+  powerdns:
+    image: powerdns/pdns-auth-49:latest
+    container_name: powerdns
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Zurich
+    command: >
+      --allow-axfr-ips=10.254.254.2 --local-port=53 --api=yes --api-key=changeme --webserver-address=0.0.0.0 --webserver-port=8081 --webserver-allow-from=0.0.0.0/0
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8081:8081"
+    networks:
+      - ddi
+
+networks:
+  ddi:
+    name: ddi
