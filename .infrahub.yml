@@ -12,7 +12,7 @@ artifact_definitions:
   - name: "DNS Zone of Topology"
     artifact_name: "main.tf"
     parameters:
-      device: "name__value"
+      topology: "name__value"
     content_type: "text/plain"
     targets: "all_topologies"
     transformation: "dnszone"
