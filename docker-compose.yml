@@ -1,11 +1,15 @@
 services:
   kea:
-    image: rkojedzinszky/kea:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: kea
     restart: unless-stopped
-    ports:
-      - "67:67/udp" # DHCPv4
-      # - "547:547/udp" # DHCPv6
+    # ports:
+    #   - "67:67/udp" # DHCPv4
+    #   # - "547:547/udp" # DHCPv6
+    volumes:
+      - ./kea-config:/etc/kea
     networks:
       - ddi
 
