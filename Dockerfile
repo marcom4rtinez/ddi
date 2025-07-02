@@ -1,7 +1,8 @@
 FROM ubuntu:25.04
 
 # Install dependencies
-RUN apt-get update && apt-get install -y curl gnupg lsb-release
+RUN apt-get update && apt-get install -y curl gnupg lsb-release postgresql postgresql-client
+
 
 
 RUN apt-get update && apt-get install -y kea
@@ -16,6 +17,7 @@ EXPOSE 8000/tcp
 
 
 RUN echo "#!/bin/bash" >> /usr/local/bin/start-kea.sh
+RUN echo "kea-admin db-init pgsql -u kea -p kea -n kea -h db -p 5432" >> /usr/local/bin/start-kea.sh
 RUN echo "sleep 50" >> /usr/local/bin/start-kea.sh
 RUN echo "kea-dhcp4 -c /etc/kea/kea-dhcp4.conf &" >> /usr/local/bin/start-kea.sh
 RUN echo "sleep 50" >> /usr/local/bin/start-kea.sh
