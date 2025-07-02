@@ -28,6 +28,22 @@ services:
     networks:
       - ddi
 
+  db:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: kea
+      POSTGRES_PASSWORD: kea
+      POSTGRES_DB: kea
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - ddi
+
+volumes:
+  pgdata:
 networks:
   ddi:
     name: ddi
