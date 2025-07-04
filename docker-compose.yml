@@ -1,17 +1,40 @@
 services:
-  kea:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: kea
+  # Kea Docker containers: https://gitlab.isc.org/isc-projects/kea-docker
+  kea4:
+    image: docker.cloudsmith.io/isc/docker/kea-dhcp4:latest
+    container_name: kea4
     restart: unless-stopped
-    # ports:
-    #   - "67:67/udp" # DHCPv4
-    #   # - "547:547/udp" # DHCPv6
     volumes:
       - ./kea-config:/etc/kea
     networks:
       - ddi
+    depends_on:
+      db:
+        condition: service_healthy
+
+  kea6:
+    image: docker.cloudsmith.io/isc/docker/kea-dhcp6:latest
+    container_name: kea6
+    restart: unless-stopped
+    volumes:
+      - ./kea-config:/etc/kea
+    networks:
+      - ddi
+    depends_on:
+      db:
+        condition: service_healthy
+
+  kea-ddns:
+    image: docker.cloudsmith.io/isc/docker/kea-dhcp6:latest
+    container_name: kea-ddns
+    restart: unless-stopped
+    volumes:
+      - ./kea-config:/etc/kea
+    networks:
+      - ddi
+    depends_on:
+      db:
+        condition: service_healthy
 
   powerdns:
     image: powerdns/pdns-auth-49:latest
@@ -21,13 +44,35 @@ services:
       TZ: Europe/Zurich
     command: >
       --allow-axfr-ips=10.254.254.2 --local-port=53 --api=yes --api-key=changeme --webserver-address=0.0.0.0 --webserver-port=8081 --webserver-allow-from=0.0.0.0/0
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "8081:8081"
+    # ports:
+    #   - "53:53/tcp"
+    #   - "53:53/udp"
+    #   - "8081:8081"
     networks:
       - ddi
 
+  db:
+    image: postgres:17
+    container_name: postgres
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "psql -U kea -d kea -c 'SELECT version FROM schema_version'"]
+    environment:
+      POSTGRES_USER: kea
+      POSTGRES_PASSWORD: kea
+      POSTGRES_DB: kea
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - type: bind
+        source: ./initdb # database setup script from kea for first run
+        target: /docker-entrypoint-initdb.d
+    networks:
+      - ddi
+
+volumes:
+  pgdata:
 networks:
   ddi:
     name: ddi
