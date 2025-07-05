@@ -71,6 +71,32 @@ services:
     networks:
       - ddi
 
+  otfd:
+    image: leg100/otfd
+    container_name: otfd
+    restart: unless-stopped
+    environment:
+      OTF_SECRET: 2876cb147697052eec5b3cdb56211681
+      OTF_SITE_TOKEN: my-site-token
+      OTF_DATABASE: postgres://otf:otf@db_otfd/otf
+      PGUSER: oft
+      PGPASSWORD: oft
+    ports:
+      - "8080:8080"
+    networks:
+      - ddi
+
+  db_otfd:
+    image: postgres:17
+    container_name: postgres_otfd
+    restart: always
+    environment:
+      POSTGRES_USER: otf
+      POSTGRES_PASSWORD: otf
+      POSTGRES_DB: otf
+    networks:
+      - ddi
+
 volumes:
   pgdata:
 networks:
