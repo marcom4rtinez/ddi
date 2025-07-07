@@ -22,6 +22,7 @@ The PoC confirms that open-source DDI is a viable alternative to proprietary sol
 
 
 ## Usage
+Start this project in either vscode devcontainer or in github codespaces. Next add the repository in infrahub.
 
 ```gql
 mutation {
@@ -40,6 +41,7 @@ mutation {
 }
 ```
 
+## Misc
 
 ### KEA 3 DB init script
 
