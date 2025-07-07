@@ -1,5 +1,27 @@
 # Open Source DDI Solution
 
+## The Need for an Open-Source DDI Solution**
+
+In modern network environments, the efficient and integrated management of DNS, DHCP, and IP Address Management (DDI) is critical for scalability, automation, and operational stability. However, many organizations face challenges with proprietary DDI solutions, which often come with high costs, limited flexibility, and vendor lock-in. As networks evolve to support dynamic workloads, containerized environments, and automated provisioning, there is a growing need for a transparent, open, and adaptable DDI solution.
+
+This project addresses that need by leveraging open-source technologies to deliver a modular, fully automated DDI stack:
+
+* **Infrahub** is utilized as the central IP Address Management (IPAM) platform, providing a reliable source of truth for network inventory and IP allocations.
+* **PowerDNS** is deployed for DNS services, with configurations generated and managed automatically through Infrahub's automation artifacts, ensuring consistency and reducing operational overhead.
+* **ISC Kea DHCP** is integrated for DHCP functionality, with its configuration dynamically managed via Infrahub's Data using the Kea API, enabling real-time updates and seamless coordination with IPAM and DNS components.
+
+By combining these open-source tools, this version of the solution provides a robust, vendor-neutral DDI architecture designed for automation, transparency, and scalability — empowering organizations to manage their network resources efficiently without sacrificing flexibility or control.
+
+## Results
+
+The proof of concept (PoC) demonstrates that a fully functional DDI solution can be built using open-source tools. With Infrahub for IPAM, PowerDNS for DNS, and Kea DHCP, all integrated through Infrahub's automation, the core requirements for automated, consistent DDI management were successfully met.
+
+While the individual components are proven in large-scale environments, further evaluation is needed to assess how the integrated solution performs in a complex enterprise network, particularly regarding scalability, stability, and operational overhead.
+
+The PoC confirms that open-source DDI is a viable alternative to proprietary solutions, providing flexibility, transparency, and cost efficiency.
+
+
+## Usage
 
 ```gql
 mutation {
@@ -19,14 +41,14 @@ mutation {
 ```
 
 
-## KEA 3 DB init script
+### KEA 3 DB init script
 
 ```bash
 mkdir -p initdb
 wget "https://gitlab.isc.org/isc-projects/kea/raw/Kea-3.0.0/src/share/database/scripts/pgsql/dhcpdb_create.pgsql" -O ./initdb/dhcpdb_create.sql
 ```
 
-## KEA RESTful API
+### KEA RESTful API
 
 Get configuration for DHCP4 service:
 ```bash
@@ -73,7 +95,7 @@ curl -X POST -H "Content-Type: application/json" -d '{ "command": "list-commands
 
 
 
-## Add new subnet
+### Add new subnet
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{ "command": "subnet4-list", "service": [ "dhcp4" ] }' http://localhost:8000/
@@ -92,7 +114,7 @@ curl -X POST -H "Content-Type: application/json" -d '{ "command": "subnet4-list"
 ```
 
 
-## Add new host reservation
+### Add new host reservation
 
 ```bash
 curl -X POST \
