@@ -1,5 +1,7 @@
 # Open Source DDI Solution
 
+![Architecture](./docs/architecture.png)
+
 ## The Need for an Open-Source DDI Solution
 
 In modern network environments, the efficient and integrated management of DNS, DHCP, and IP Address Management (DDI) is critical for scalability, automation, and operational stability. However, many organizations face challenges with proprietary DDI solutions, which often come with high costs, limited flexibility, and vendor lock-in. As networks evolve to support dynamic workloads, containerized environments, and automated provisioning, there is a growing need for a transparent, open, and adaptable DDI solution.
